@@ -1,0 +1,20 @@
+{
+  "name": "rpsls",
+  "version": "1.0.0",
+  "description": "Rock, Paper, Scissors, Lizards and Spocks Game",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [
+    "rock",
+    "paper",
+    "scissors",
+    "game"
+  ],
+  "author": "Craig Satchell",
+  "license": "ISC",
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  }
+}
