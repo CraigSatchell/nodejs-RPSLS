@@ -1,6 +1,7 @@
 "use strict";
 
 const prompt = require('prompt-sync')();
+const chalk = require('chalk');
 
 const { Player, enemiesList, gestureChoice } = require('./data.js');
 
@@ -12,7 +13,7 @@ function app() {
    let player2 = new Player('Player 2');
 
    playGame(player1, player2, gestureChoice, enemiesList);
-   console.log('\n\t\tThanks for playing RPSLS! :)');
+   console.log('\n\t\tThanks for playing RPSLS! :)\n\n');
 }
 
 
@@ -77,8 +78,8 @@ function playGame(player1, player2, gestures, enemiesLst) {
       } else {
          roundWinner = determineWinner(player1, player2, enemiesLst);
          count++;
-         console.log(`\n\t\t${roundWinner.name} won the round.`);
-         console.log(`\n\t\tSCORE: ${player1.name}: ${player1.wins}   ${player2.name}: ${player2.wins}`);
+         console.log(chalk.yellow(`\n\t\t${roundWinner.name} won the round.`));
+         console.log(chalk.green('\n\t\t' + chalk.black.bgYellow(' SCORE ') + ' ' + chalk.white(player1.name + ': ' + chalk.yellow(player1.wins) + '  ' + player2.name + ': ' + chalk.yellow(player2.wins))));
          pressReturn();
 
          // check for series winner
@@ -88,7 +89,11 @@ function playGame(player1, player2, gestures, enemiesLst) {
             gameWinner = player2;
          }
          if (gameWinner !== undefined) {
-            pressReturn(`Congratulations! ${gameWinner.name}, you won the series.`);
+            appBanner();
+            console.log('\n\n');
+            pressReturn(chalk.bold.whiteBright("Congratulations! " + chalk.bold.yellow(gameWinner.name) + ", you won the series."));
+            gameWinner.games += 1; // update player game stats
+            break;
          }
       }
    }
