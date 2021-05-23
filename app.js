@@ -1,47 +1,41 @@
 "use strict";
 
 const prompt = require('prompt-sync')();
-const { Gesture, Player, gestureChoice } = require('./gestures.js');
 
-// players
+const { Player, gestureChoice } = require('./classes.js');
+
+
+// initialize players
 let p1 = new Player('Player 1');
 let p2 = new Player('Player 2');
 
 // enemies list
-// const enemiesRock = ['paper','spock','Paper covers rock!','Spock vaporizes Rock!'];
-// const enemiesScissors = ['spock', 'rock','Spock smashes scissors!', 'Rock crushes Scissors!'];
-// const enemiesPaper = ['scissors', 'lizard', 'Scissors cuts Paper!', 'Lizard eats Paper!'];
-// const enemiesLizard = ['rock', 'scissors', 'Rock crushes Lizard!', 'Scissors decapitates Lizard!' ];
-// const enemiesSpock = ['lizard', 'paper', 'Lizard poisons Spock!', 'Paper disproves Spock!'];
-
 const enemiesList = [
    {
       name: 'rock',
       enemies: ['paper', 'spock'],
-      messages: ['Paper covers Rock!','Spock vaporizes Rock!']
+      messages: ['Paper covers Rock!', 'Spock vaporizes Rock!']
    },
    {
       name: 'scissors',
-      enemies: ['spock','rock'],
-      messages: ['Spock smashes Scissors!','Rock crushes Scissors!']
+      enemies: ['spock', 'rock'],
+      messages: ['Spock smashes Scissors!', 'Rock crushes Scissors!']
    },
    {
       name: 'paper',
-      enemies: ['scissors','lizard'],
-      messages: ['Scissors cuts Paper!','Lizard eats Paper!']
+      enemies: ['scissors', 'lizard'],
+      messages: ['Scissors cuts Paper!', 'Lizard eats Paper!']
    },
    {
       name: 'lizard',
-      enemies: ['rock','scissors'],
-      messages: ['Rock crushes Lizard!','Scissors decapitates Lizard!']
+      enemies: ['rock', 'scissors'],
+      messages: ['Rock crushes Lizard!', 'Scissors decapitates Lizard!']
    },
    {
       name: 'spock',
-      enemies: ['lizard','paper'],
-      messages: ['Lizard poisons Spock!','Paper disproves Spock!']
+      enemies: ['lizard', 'paper'],
+      messages: ['Lizard poisons Spock!', 'Paper disproves Spock!']
    }
-
-
 ]
 
 
@@ -50,19 +44,19 @@ function app() {
    console.log("app");
 }
 
-// add player
-function addPlayers() {
-   console.log('add players')
-}
-
 
 // setup new game
-function playGame(player1, player2, gestures) {
-   let players = 0; let play1 = ''; let play2 = '';
-   let p1Gesture= ''; let p2Gesture = '';
+function playGame(player1, player2, gestures, enemiesLst) {
+   // declare local variables
+   let players = 0;
+   let play1 = '';
+   let play2 = '';
+   let winner;
+
    while (players !== 1 && players !== 2) {
       console.clear();
-      console.log('\n\t\t*** PLAY GAME ***');
+      appBanner();
+      console.log('\n\t\t\t     *** PLAY GAME ***\n');
       players = parseInt(promptFor('1 or 2 players? '));
    }
 
@@ -70,7 +64,7 @@ function playGame(player1, player2, gestures) {
       play1 = promptFor('Enter Name for Player 1: ');
       play2 = promptFor('Enter name for Player 2: ');
    } else {
-      play1 = promptFor('Enter Name for Player 1: ');
+      play1 = promptFor('Enter Name for Player 1: '); 0
       play2 = 'AI Player';
    }
    if (play1 !== '') {
@@ -80,88 +74,116 @@ function playGame(player1, player2, gestures) {
       player2.name = play2;
    }
 
-   // get gestures
+   // get player gestures
    if (players === 2) {
-      p1Gesture = selectGesture(player1.name, gestures);
-      p2Gesture = selectGesture(player2.name, gestures);
-   } else {
-      p1Gesture = selectGesture(player1.name, gestures);
-      p2Gesture = selectGestureAI(gestures);
+      selectGestureHuman(player1, gestures);
+      selectGestureHuman(player2, gestures);
+   } else {    // if AI Player exist
+      selectGestureHuman(player1, gestures);
+      selectGestureAI(player2, gestures);
    }
-   console.log(player1.name, p1Gesture);
-   console.log(player2.name, p2Gesture);
-}
+   // check if gestures are equal else check for winner
+   if (player1.gesture === player2.gesture) {
+      pressReturn('Both players chose the same gesture! Repeat...');
+   } else {
+      determineWinner(player1, player2, enemiesLst);
+   }
 
-
-// run game
-function beginGame(player1, player2) {
-   // player 1 turn
-   // player 2 turn
-   // check for winner
-   // update player stats
 }
 
 
 // select gesture
-function selectGesture(player, gestures) {
+function selectGestureHuman(player, gestures) {
+   // declare local variables
    let selGesture = -1;
+
    while (selGesture < 0 || selGesture > gestures.length - 1) {
       console.clear();
-      console.log(`\n\t\t*** ${player}: SELECT A GESTURE ***`);
+      appBanner();
+      console.log(`\n\t\t   *** ${player.name}: SELECT A GESTURE ***`);
       gestures.map(function (g, index) {
          return console.log('\t\t\t', index, ' - ', g);
       })
-      selGesture = promptGesture(`Select One: `);
-      //console.log(parseInt(selGesture), gestures[selGesture]);
+      selGesture = promptGesture(`\tSelect One: `);
       if (isNaN(parseInt(selGesture))) {
          selGesture = -1;
       } else {
-         selGesture = parseInt(selGesture);
+         player.gesture = gestures[parseInt(selGesture)];
       }
    }
-   return gestures[selGesture];
 }
 
 
-function sleep(ms) {
-   return new Promise(resolve => setTimeout(resolve, ms));
+function updatePlayerWins(player) {
+   player.wins += 1;
 }
+
 
 // select gesture
-async function selectGestureAI(gestures) {
-   let selGesture = -1;
+function selectGestureAI(player, gestures) {
+   // declare local variables
+   let selGesture;
+   // assign random gesture to AI player
    selGesture = Math.floor(Math.random() * gestures.length);
    console.log('\n\t\tAI Player is thinking......');
-   await sleep(5000);
-   return gestures[selGesture];
+   player.gesture = gestures[selGesture];
 }
 
 
-
-
-// update game statistics
-function checkForWinner(gesture1, gesture2) {
-   switch (gesture1) {
-      case 'rock':
-         break;
-      case 'scissors'
+// determine winner 
+function determineWinner(player1, player2, arr) {
+   // declare local variables
+   let winner;
+   let myEnemy;
+   // search ememies list for matching gesture
+   myEnemy = arr.find(function (e) {
+      return e.name == player1.gesture;
+   });
+   console.log('E100: ', myEnemy);
+   console.log('E101: ', myEnemy.enemies.includes(player2.gesture));
+   console.log('E102: Player 1:', player1.gesture, '  Player 2:', player2.gesture);
+   // determine winner
+   if (myEnemy.enemies.includes(player2.gesture)) {
+      winner = player2; // player two won the round
+   } else {
+      winner = player1; // player one won the round
    }
-
+   updatePlayerWins(winner);  // update winning player's score;
+   console.log('E110: Player 1:', player1.wins, '   Player 2:', player2.wins);
+   return winner;    // return winning player's class object
 }
 
+// reset game
+function resetGame(player1, player2) {
+   player1.name = 'Player 1';
+   player1.wins = 0;
+   player1.gesture = '';
+   
+   player2.name = 'Player 2';
+   player2.wins = 0;
+   player2.gesture = '';
+}
 
 
 // display game statistics
-function displayGameStats() {
+function displayScoreBoard() {
 
 }
 
+/*****************************
+ * helper functions
+ */
+
+// wait for user to press return to continue
+function pressReturn(msg = 'Press RETURN...') {
+   prompt(`\n\t\t${msg}`);
+}
 
 // prompt for standard data entry
 function promptFor(label) {
-   //console.log('\n');
    return prompt(`\t\t${label}`);
 }
+
 
 // prompt for gesture entry
 function promptGesture(label) {
@@ -169,7 +191,14 @@ function promptGesture(label) {
 }
 
 
+function appBanner() {
+   console.log('\n\n\t\t-----------------------------------------');
+   console.log('\t\t|    ROCK PAPER SCISSORS LIZARD SPOCK   |');
+   console.log('\t\t-----------------------------------------');
+
+}
+
+
+
 // testing
-playGame(p1, p2, gestureChoice);
-//selectGesture(p1.name, gestureChoice);
-//selectGestureAI(gestureChoice);
+playGame(p1, p2, gestureChoice, enemiesList);

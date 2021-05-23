@@ -1,17 +1,10 @@
 "use strict";
 
-// gesture class
-class Gesture {
-   constructor(name, enemies) {
-      this.name = name;
-      this.enemies = enemies;
-   }
-}
-
 // player class
 class Player {
    constructor(player) {
       this._name = player;
+      this._wins = 0;
    }
 
    get name() {
@@ -29,6 +22,15 @@ class Player {
    set wins(newWins) {
       this._wins = newWins;
    }
+
+   get gesture() {
+      return this._gesture;
+   }
+
+   set gesture(newGesture) {
+      this._gesture = newGesture;
+      
+   }
 }
 
 // define selectable game gestures
@@ -36,6 +38,5 @@ const gestureChoice = ['rock', 'paper', 'scissors', 'lizard', 'spock'];
 
 
 // default exports
-module.exports.Gesture = Gesture;
 module.exports.Player = Player;
 module.exports.gestureChoice = gestureChoice;
