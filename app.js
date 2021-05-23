@@ -2,46 +2,16 @@
 
 const prompt = require('prompt-sync')();
 
-const { Player, gestureChoice } = require('./classes.js');
-
-
-// initialize players
-let p1 = new Player('Player 1');
-let p2 = new Player('Player 2');
-
-// enemies list
-const enemiesList = [
-   {
-      name: 'rock',
-      enemies: ['paper', 'spock'],
-      messages: ['Paper covers Rock!', 'Spock vaporizes Rock!']
-   },
-   {
-      name: 'scissors',
-      enemies: ['spock', 'rock'],
-      messages: ['Spock smashes Scissors!', 'Rock crushes Scissors!']
-   },
-   {
-      name: 'paper',
-      enemies: ['scissors', 'lizard'],
-      messages: ['Scissors cuts Paper!', 'Lizard eats Paper!']
-   },
-   {
-      name: 'lizard',
-      enemies: ['rock', 'scissors'],
-      messages: ['Rock crushes Lizard!', 'Scissors decapitates Lizard!']
-   },
-   {
-      name: 'spock',
-      enemies: ['lizard', 'paper'],
-      messages: ['Lizard poisons Spock!', 'Paper disproves Spock!']
-   }
-]
+const { Player, enemiesList, gestureChoice } = require('./data.js');
 
 
 // main application
 function app() {
-   playGame(p1, p2, gestureChoice, enemiesList);
+   // local variables
+   let player1 = new Player('Player 1');
+   let player2 = new Player('Player 2');
+
+   playGame(player1, player2, gestureChoice, enemiesList);
    console.log('\n\t\tThanks for playing RPSLS! :)');
 }
 
@@ -54,7 +24,8 @@ function playGame(player1, player2, gestures, enemiesLst) {
    let play2 = '';
    let roundChoices = [3, 5, 7];
    let rounds;
-   let winner;
+   let roundWinner;
+   let gameWinner;
    let input;
 
    while (players !== 1 && players !== 2) {
@@ -104,9 +75,21 @@ function playGame(player1, player2, gestures, enemiesLst) {
       if (player1.gesture === player2.gesture) {
          pressReturn('Both players chose the same gesture! Repeat...');
       } else {
-         winner = determineWinner(player1, player2, enemiesLst);
+         roundWinner = determineWinner(player1, player2, enemiesLst);
          count++;
-         pressReturn(`${winner.name} won the round. Press ENTER to continue`);
+         console.log(`\n\t\t${roundWinner.name} won the round.`);
+         console.log(`\n\t\tSCORE: ${player1.name}: ${player1.wins}   ${player2.name}: ${player2.wins}`);
+         pressReturn();
+
+         // check for series winner
+         if ((player1.wins) > (rounds / 2)) {
+            gameWinner = player1;
+         } else if ((player2.wins) > (rounds / 2)){
+            gameWinner = player2;
+         }
+         if (gameWinner !== undefined) {
+            pressReturn(`Congratulations! ${gameWinner.name}, you won the series.`);
+         }
       }
    }
 }
@@ -170,7 +153,6 @@ function determineWinner(player1, player2, arr) {
       winner = player1; // player one won the round
    }
    updatePlayerWins(winner);  // update winning player's score;
-   // console.log('E110: Player 1:', player1.wins, '   Player 2:', player2.wins);
    return winner;    // return winning player's class object
 }
 
@@ -178,10 +160,12 @@ function determineWinner(player1, player2, arr) {
 function resetGame(player1, player2) {
    player1.name = 'Player 1';
    player1.wins = 0;
+   player1.games = 0;
    player1.gesture = '';
 
    player2.name = 'Player 2';
    player2.wins = 0;
+   player2.games = 0;
    player2.gesture = '';
 }
 
@@ -226,5 +210,5 @@ function playGameBanner() {
 
 }
 
-
+// execute application
 app();
