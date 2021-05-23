@@ -5,6 +5,7 @@ class Player {
    constructor(player) {
       this._name = player;
       this._wins = 0;
+      this._games = 0;
    }
 
    get name() {
@@ -21,6 +22,14 @@ class Player {
 
    set wins(newWins) {
       this._wins = newWins;
+   }
+
+   get games() {
+      return this._games;
+   }
+
+   set games(newGames) {
+      this._games = newGames;
    }
 
    get gesture() {
