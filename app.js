@@ -17,7 +17,7 @@ function app() {
 }
 
 
-// setup new game
+// setup and play games
 function playGame(player1, player2, gestures, enemiesLst) {
    // declare local variables
    let players = 0;
@@ -109,7 +109,6 @@ function playGame(player1, player2, gestures, enemiesLst) {
 }
 
 
-
 // select human gesture
 function selectGestureHuman(player, gestures) {
    // declare local variables
@@ -142,22 +141,20 @@ function selectGestureAI(player, gestures) {
 }
 
 
-
 // update player wins
 function updatePlayerWins(player) {
    player.wins += 1;
 }
 
 
-
 // determine winner 
-function determineWinner(player1, player2, arr) {
+function determineWinner(player1, player2, enemiesList) {
    // declare local variables
    let winner;
    let myEnemy;
 
    // search ememies list for matching gesture
-   myEnemy = arr.find(function (e) {
+   myEnemy = enemiesList.find(function (e) {
       return e.name == player1.gesture;
    });
    // console.log('E100: ', myEnemy);
