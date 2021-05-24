@@ -53,7 +53,7 @@ function playGame(player1, player2, gestures, enemiesLst) {
       // get rounds to play game
       while (!roundChoices.includes(rounds)) {
          playGameBanner();
-         input = promptFor("Rounds you would like to play? (3, 5 or 7) or 'X' to Quit ? ");
+         input = promptFor("How many rounds in series? (3, 5 or 7) or 'X' to Quit ? ");
          if (input.toUpperCase() === 'X') {
             return
          }
@@ -92,7 +92,7 @@ function playGame(player1, player2, gestures, enemiesLst) {
             if (gameWinner !== undefined) {
                appBanner();
                console.log('\n\n');
-               pressReturn(chalk.bold.whiteBright("Congratulations! " + chalk.bold.yellow(gameWinner.name) + ", you won the series."));
+               pressReturn("Congratulations! " + chalk.black.bgYellow(` ${gameWinner.name} `) + ", you won the series.");
                gameWinner.games += 1; // update player game stats
                break;
             }
@@ -210,20 +210,36 @@ function promptGesture(label) {
    return prompt(`\t\t${label}`, { echo: '*' });
 }
 
+function cenText(text, width = 80) {
+   let padding = 0;
+   if (text.length <= width) {
+      padding = (width - text.length) / 2;
+   }
+   return ' '.repeat(padding) + text + ' '.repeat(padding)
+}
 
+
+// application banner
 function appBanner() {
+   const bannerText = 'ROCK PAPER SCISSORS LIZARD SPOCK'
    console.clear();
-   console.log('\n\n\t\t-----------------------------------------');
-   console.log('\t\t|    ROCK PAPER SCISSORS LIZARD SPOCK   |');
-   console.log('\t\t-----------------------------------------');
+   console.log(chalk.black.bgWhite('\n\t\t' + ' '.repeat(46)));
+   console.log(chalk.black.bgWhite('\t\t' + cenText(bannerText,46)));
+   console.log(chalk.black.bgWhite('\t\t' + ' '.repeat(46)));
+
+   // console.log('\n\n\t\t-----------------------------------------');
+   // console.log('\t\t|    ROCK PAPER SCISSORS LIZARD SPOCK   |');
+   // console.log('\t\t-----------------------------------------');
 
 }
 
 function playGameBanner() {
    appBanner();
-   console.log('\n\t\t\t     *** PLAY GAME ***\n');
+   console.log('\n\t\t' + cenText('*** PLAY GAME ***\n',46));
 
 }
 
 // execute application
 app();
+
+
