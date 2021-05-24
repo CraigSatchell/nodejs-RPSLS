@@ -49,57 +49,68 @@ function playGame(player1, player2, gestures, enemiesLst) {
    player1.name = play1 === '' ? player1.name : play1;
    player2.name = play2 === '' ? player2.name : play2;
 
-   // get rounds to play game
-   while (!roundChoices.includes(rounds)) {
-      playGameBanner();
-      input = promptFor("How many rounds you would like to play? (3, 5, or 7) or 'X' to Quit ? ");
-      if (input.toUpperCase() === 'X') {
-         return
-      }
-      rounds = parseInt(input);
-   }
-
-   let count = 1;
-   while (count <= rounds) {
-      // get player gestures
-      appBanner();
-      console.log("\n\t\t\t\tROUND " + count)
-      if (players === 2) {
-         selectGestureHuman(player1, gestures);
-         selectGestureHuman(player2, gestures);
-      } else {    // if AI Player exist
-         selectGestureHuman(player1, gestures);
-         selectGestureAI(player2, gestures);
-      }
-
-      // check if gestures are equal else check for winner
-      if (player1.gesture === player2.gesture) {
-         pressReturn('Both players chose the same gesture! Repeat...');
-      } else {
-         roundWinner = determineWinner(player1, player2, enemiesLst);
-         count++;
-         console.log(chalk.yellow(`\n\t\t${roundWinner.name} won the round.`));
-         console.log(chalk.green('\n\t\t' + chalk.black.bgYellow(' SCORE ') + ' ' + chalk.white(player1.name + ': ' + chalk.yellow(player1.wins) + '  ' + player2.name + ': ' + chalk.yellow(player2.wins))));
-         pressReturn();
-
-         // check for series winner
-         if ((player1.wins) > (rounds / 2)) {
-            gameWinner = player1;
-         } else if ((player2.wins) > (rounds / 2)){
-            gameWinner = player2;
+   while (true) {
+      // get rounds to play game
+      while (!roundChoices.includes(rounds)) {
+         playGameBanner();
+         input = promptFor("Rounds you would like to play? (3, 5 or 7) or 'X' to Quit ? ");
+         if (input.toUpperCase() === 'X') {
+            return
          }
-         if (gameWinner !== undefined) {
-            appBanner();
-            console.log('\n\n');
-            pressReturn(chalk.bold.whiteBright("Congratulations! " + chalk.bold.yellow(gameWinner.name) + ", you won the series."));
-            gameWinner.games += 1; // update player game stats
-            break;
+         rounds = parseInt(input);
+      }
+
+      let count = 1;
+      while (count <= rounds) {
+         // get player gestures
+         appBanner();
+         console.log("\n\t\t\t\tROUND " + count)
+         if (players === 2) {
+            selectGestureHuman(player1, gestures);
+            selectGestureHuman(player2, gestures);
+         } else {    // if AI Player exist
+            selectGestureHuman(player1, gestures);
+            selectGestureAI(player2, gestures);
+         }
+
+         // check if gestures are equal else check for winner
+         if (player1.gesture === player2.gesture) {
+            pressReturn('Both players chose the same gesture! Repeat...');
+         } else {
+            roundWinner = determineWinner(player1, player2, enemiesLst);
+            count++;
+            console.log(chalk.yellow(`\n\t\t${roundWinner.name} won the round.`));
+            console.log(chalk.green('\n\t\t' + chalk.black.bgYellow(' SCORE ') + ' ' + chalk.white(player1.name + ': ' + chalk.yellow(player1.wins) + '  ' + player2.name + ': ' + chalk.yellow(player2.wins))));
+            pressReturn();
+
+            // check for series winner
+            if ((player1.wins) > (rounds / 2)) {
+               gameWinner = player1;
+            } else if ((player2.wins) > (rounds / 2)) {
+               gameWinner = player2;
+            }
+            if (gameWinner !== undefined) {
+               appBanner();
+               console.log('\n\n');
+               pressReturn(chalk.bold.whiteBright("Congratulations! " + chalk.bold.yellow(gameWinner.name) + ", you won the series."));
+               gameWinner.games += 1; // update player game stats
+               break;
+            }
          }
       }
+      input = promptFor(chalk.yellow("\n\t\tPlay another series ( Y/N ) ? ")).toUpperCase();
+      if (input !== 'Y') {
+         break;      // exit loop if answer is no
+      }
+      player1.wins = 0;    // reset player 1 wins to 0
+      player2.wins = 0;    // reset player 2 wins to 0
+      rounds = 0;  // reset rounds
    }
 }
 
-// select gesture
+
+
+// select human gesture
 function selectGestureHuman(player, gestures) {
    // declare local variables
    let selGesture = -1;
@@ -120,13 +131,7 @@ function selectGestureHuman(player, gestures) {
 }
 
 
-// update player wins
-function updatePlayerWins(player) {
-   player.wins += 1;
-}
-
-
-// select gesture
+// select AI gesture
 function selectGestureAI(player, gestures) {
    // declare local variables
    let selGesture;
@@ -135,6 +140,14 @@ function selectGestureAI(player, gestures) {
    console.log('\n\t\tAI Player is thinking......');
    player.gesture = gestures[selGesture];
 }
+
+
+
+// update player wins
+function updatePlayerWins(player) {
+   player.wins += 1;
+}
+
 
 
 // determine winner 
