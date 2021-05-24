@@ -4,7 +4,7 @@
 class GameStats {
    constructor() {
       this.wins = 0;
-      this.games = 0;
+      this.series = 0;
    }
 
    get wins() {
@@ -15,12 +15,12 @@ class GameStats {
       this._wins = newWins;
    }
 
-   get games() {
-      return this._games;
+   get series() {
+      return this._series;
    }
 
-   set games(newGames) {
-      this._games = newGames;
+   set series(newSeries) {
+      this._series = newSeries;
    }
 }
 

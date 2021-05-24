@@ -3,7 +3,18 @@
 const prompt = require('prompt-sync')();
 const chalk = require('chalk');
 
+// local imports
 const { Player, enemiesList, gestureChoice } = require('./data.js');
+
+const appTitle = 'ROCK PAPER SCISSORS LIZARD SPOCK (RPSLS)';
+
+// ui color definitions
+const colorBanner = chalk.black.bgYellow;
+const colorPrimary = chalk.yellow;
+const colorPrimaryHighlight = chalk.black.bgYellow;
+const colorSecondary = chalk.green;
+const colorSecondaryHighlight = chalk.black.bgGreen;
+const colorInline = chalk.white;
 
 
 // main application
@@ -13,7 +24,7 @@ function app() {
    let player2 = new Player('Player 2');
 
    playGame(player1, player2, gestureChoice, enemiesList);
-   console.log('\n\t\tThanks for playing RPSLS! :)\n\n');
+   console.log('\n\n\t\t' + cenText('Thanks for playing RPSLS! :)\n\n', 46));
 }
 
 
@@ -26,12 +37,12 @@ function playGame(player1, player2, gestures, enemiesLst) {
    let roundChoices = [3, 5, 7];
    let rounds;
    let roundWinner;
-   let gameWinner;
+   let seriesWinner;
    let input;
 
    while (players !== 1 && players !== 2) {
       playGameBanner();
-      input = promptFor("1 or 2 players ('X' to Quit ) ? ");
+      input = promptFor("1 or 2 players ('X' to Quit) ? ");
       if (input.toUpperCase() === 'X') {
          return
       }
@@ -63,8 +74,8 @@ function playGame(player1, player2, gestures, enemiesLst) {
       let count = 1;
       while (count <= rounds) {
          // get player gestures
-         appBanner();
-         console.log("\n\t\t\t\tROUND " + count)
+         appBanner(appTitle);
+         console.log(colorPrimary('\n\t\t' + cenText('ROUND ' + count, 46)));
          if (players === 2) {
             selectGestureHuman(player1, gestures);
             selectGestureHuman(player2, gestures);
@@ -79,32 +90,33 @@ function playGame(player1, player2, gestures, enemiesLst) {
          } else {
             roundWinner = determineWinner(player1, player2, enemiesLst);
             count++;
-            console.log(chalk.yellow(`\n\t\t${roundWinner.name} won the round.`));
-            console.log(chalk.green('\n\t\t' + chalk.black.bgYellow(' SCORE ') + ' ' + chalk.white(player1.name + ': ' + chalk.yellow(player1.wins) + '  ' + player2.name + ': ' + chalk.yellow(player2.wins))));
+            console.log(colorPrimary(`\n\t\t${roundWinner.name} won the round.`));
+            console.log(colorSecondary('\n\t\t' + colorPrimaryHighlight(' SCORE ') + ' ' + colorInline(player1.name + ': ' + colorPrimary(player1.wins) + '  ' + player2.name + ': ' + colorPrimary(player2.wins))));
             pressReturn();
 
             // check for series winner
             if ((player1.wins) > (rounds / 2)) {
-               gameWinner = player1;
+               seriesWinner = player1;
             } else if ((player2.wins) > (rounds / 2)) {
-               gameWinner = player2;
+               seriesWinner = player2;
             }
-            if (gameWinner !== undefined) {
-               appBanner();
+            if (seriesWinner !== undefined && seriesWinner !== null) {
+               appBanner(appTitle);
                console.log('\n\n');
-               pressReturn("Congratulations! " + chalk.black.bgYellow(` ${gameWinner.name} `) + ", you won the series.");
-               gameWinner.games += 1; // update player game stats
-               break;
+               pressReturn("Congratulations! " + colorPrimaryHighlight(` ${seriesWinner.name} `) + ", you won the series.\n");
+               seriesWinner.series += 1; // update player game stats
+               count = rounds + 1;    // force loop exit
             }
          }
       }
-      input = promptFor(chalk.yellow("\n\t\tPlay another series ( Y/N ) ? ")).toUpperCase();
+      input = promptFor(colorPrimary("Play another series ( Y/N ) ? ")).toUpperCase();
       if (input !== 'Y') {
          break;      // exit loop if answer is no
       }
       player1.wins = 0;    // reset player 1 wins to 0
       player2.wins = 0;    // reset player 2 wins to 0
-      rounds = 0;  // reset rounds
+      seriesWinner = null;   // reset game winner
+      rounds = 0;          // reset rounds
    }
 }
 
@@ -147,7 +159,7 @@ function updatePlayerWins(player) {
 }
 
 
-// determine winner 
+// determine round winner 
 function determineWinner(player1, player2, enemiesList) {
    // declare local variables
    let winner;
@@ -190,6 +202,7 @@ function displayScoreBoard() {
 
 }
 
+
 /*****************************
  * helper functions
  */
@@ -198,6 +211,7 @@ function displayScoreBoard() {
 function pressReturn(msg = 'Press RETURN...') {
    prompt(`\n\t\t${msg}`);
 }
+
 
 // prompt for standard data entry
 function promptFor(label) {
@@ -210,34 +224,35 @@ function promptGesture(label) {
    return prompt(`\t\t${label}`, { echo: '*' });
 }
 
-function cenText(text, width = 80) {
+
+function cenText(text, width = 50) {
    let padding = 0;
    if (text.length <= width) {
       padding = (width - text.length) / 2;
+      return ' '.repeat(padding) + text + ' '.repeat(padding)
    }
-   return ' '.repeat(padding) + text + ' '.repeat(padding)
+   return text;   // omit text centering
 }
 
 
 // application banner
-function appBanner() {
-   const bannerText = 'ROCK PAPER SCISSORS LIZARD SPOCK'
-   console.clear();
-   console.log(chalk.black.bgWhite('\n\t\t' + ' '.repeat(46)));
-   console.log(chalk.black.bgWhite('\t\t' + cenText(bannerText,46)));
-   console.log(chalk.black.bgWhite('\t\t' + ' '.repeat(46)));
-
-   // console.log('\n\n\t\t-----------------------------------------');
-   // console.log('\t\t|    ROCK PAPER SCISSORS LIZARD SPOCK   |');
-   // console.log('\t\t-----------------------------------------');
+function appBanner(appTitle) {
+      console.clear();
+   console.log(colorBanner('\n\n\n\t\t' + ' '.repeat(46)));
+   console.log(colorBanner('\t\t' + ' '.repeat(46)));
+   console.log(colorBanner('\t\t' + cenText(appTitle, 46)));
+   console.log(colorBanner('\t\t' + ' '.repeat(46)));
+   console.log(colorBanner('\t\t' + ' '.repeat(46)));
 
 }
+
 
 function playGameBanner() {
-   appBanner();
-   console.log('\n\t\t' + cenText('*** PLAY GAME ***\n',46));
+   appBanner(appTitle);
+   console.log(colorPrimary('\n\n\t\t' + cenText('*** PLAY GAME ***\n', 46)));
 
 }
+
 
 // execute application
 app();
