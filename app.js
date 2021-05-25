@@ -4,7 +4,9 @@ const prompt = require('prompt-sync')();
 const chalk = require('chalk');
 
 // local imports
-const { Player, enemiesList, gestureChoice } = require('./data.js');
+const { enemiesList, gestureChoice } = require('./data.js');
+const AI = require('./classes/AI');
+const Human = require('./classes/human');
 
 const appTitle = 'ROCK PAPER SCISSORS LIZARD SPOCK (RPSLS)';
 
@@ -20,20 +22,20 @@ const colorInline = chalk.white;
 // main application
 function app() {
    // local variables
-   let player1 = new Player('Player 1');
-   let player2 = new Player('Player 2');
 
-   playGame(player1, player2, gestureChoice, enemiesList);
+   playGame(gestureChoice, enemiesList);
    console.log('\n\n\t\t' + cenText('Thanks for playing RPSLS! :)\n\n', 46));
 }
 
 
 // setup and play games
-function playGame(player1, player2, gestures, enemiesLst) {
+function playGame(gestures, enemiesLst) {
    // declare local variables
    let players = 0;
    let play1 = '';
    let play2 = '';
+   let player1;
+   let player2;
    let roundChoices = [3, 5, 7];
    let rounds;
    let roundWinner;
@@ -57,6 +59,15 @@ function playGame(player1, player2, gestures, enemiesLst) {
       play1 = promptFor('Enter Name for Player 1: '); 0
       play2 = 'AI Player';
    }
+   // initialize player class instances
+   if (players === 1) {
+      player1 = new Human('Player 1');
+      player2 = new AI('AI Player');
+   } else {
+      player1 = new Human('Player 1');
+      player2 = new Human('Player 2');
+   }
+   // reassign names to player class instances, if required
    player1.name = play1 === '' ? player1.name : play1;
    player2.name = play2 === '' ? player2.name : play2;
 
@@ -124,7 +135,7 @@ function playGame(player1, player2, gestures, enemiesLst) {
 // select human gesture
 function selectGestureHuman(player, gestures) {
    // declare local variables
-   let selGesture = -1;
+   let selGesture = -1
 
    while (selGesture < 0 || selGesture > gestures.length - 1) {
 
@@ -132,11 +143,11 @@ function selectGestureHuman(player, gestures) {
       gestures.map(function (g, index) {
          return console.log('\t\t\t', index, ' - ', g);
       })
-      selGesture = promptGesture(`\tSelect One: `);
-      if (isNaN(parseInt(selGesture))) {
+      selGesture = parseInt(promptGesture(`\tSelect One: `));
+      if (isNaN(selGesture)) {
          selGesture = -1;
       } else {
-         player.gesture = gestures[parseInt(selGesture)];
+         player.gesture = gestures[selGesture];
       }
    }
 }
@@ -167,14 +178,18 @@ function determineWinner(player1, player2, enemiesList) {
 
    // search ememies list for matching gesture
    myEnemy = enemiesList.find(function (e) {
-      return e.name == player1.gesture;
+      return e.name === player1.gesture;
    });
-   // console.log('E100: ', myEnemy);
-   // console.log('E101: ', myEnemy.enemies.includes(player2.gesture));
-   // console.log('E102: Player 1:', player1.gesture, '  Player 2:', player2.gesture);
+   // search for en
+   let enemy = myEnemy.enemies.find(function (e) {
+      return e.name === player2.gesture;
+   });
+   console.log('E100: ', myEnemy);
+   //console.log('E101: ', enemy.name, player2.gesture, enemy === player2.gesture);
+   console.log('E102: Player 1:', player1.gesture, '  Player 2:', player2.gesture);
 
    // determine winner
-   if (myEnemy.enemies.includes(player2.gesture)) {
+   if (enemy !== undefined) {
       winner = player2; // player two won the round
    } else {
       winner = player1; // player one won the round
@@ -194,12 +209,6 @@ function resetGame(player1, player2) {
    player2.wins = 0;
    player2.games = 0;
    player2.gesture = '';
-}
-
-
-// display game statistics
-function displayScoreBoard() {
-
 }
 
 
@@ -237,7 +246,7 @@ function cenText(text, width = 50) {
 
 // application banner
 function appBanner(appTitle) {
-      console.clear();
+   console.clear();
    console.log(colorBanner('\n\n\n\t\t' + ' '.repeat(46)));
    console.log(colorBanner('\t\t' + ' '.repeat(46)));
    console.log(colorBanner('\t\t' + cenText(appTitle, 46)));

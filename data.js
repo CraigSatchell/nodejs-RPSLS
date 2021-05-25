@@ -1,55 +1,5 @@
 "use strict";
 
-// game statistics class
-class GameStats {
-   constructor() {
-      this.wins = 0;
-      this.series = 0;
-   }
-
-   get wins() {
-      return this._wins;
-   }
-
-   set wins(newWins) {
-      this._wins = newWins;
-   }
-
-   get series() {
-      return this._series;
-   }
-
-   set series(newSeries) {
-      this._series = newSeries;
-   }
-}
-
-
-class Player extends GameStats {
-   constructor(name) {
-      super()
-      this._name = name;
-   }
-
-   get name() {
-      return this._name;
-   }
-
-   set name(newName) {
-      this._name = newName;
-   }
-
-   get gesture() {
-      return this._gesture;
-   }
-
-   set gesture(newGesture) {
-      this._gesture = newGesture;
-      
-   }
-}
-
-
 // define selectable game gestures
 const gestureChoice = ['rock', 'paper', 'scissors', 'lizard', 'spock'];
 
@@ -58,33 +8,72 @@ const gestureChoice = ['rock', 'paper', 'scissors', 'lizard', 'spock'];
 const enemiesList = [
    {
       name: 'rock',
-      enemies: ['paper', 'spock'],
-      messages: ['Paper covers Rock!', 'Spock vaporizes Rock!']
+      enemies: [
+         {
+            name: 'paper',
+            message: 'Paper covers Rock!'
+         },
+         {
+            name: 'spock',
+            message: 'Spock vaporizes Rock'
+         }
+      ]
    },
    {
       name: 'scissors',
-      enemies: ['spock', 'rock'],
-      messages: ['Spock smashes Scissors!', 'Rock crushes Scissors!']
+      enemies: [
+         {
+            name: 'spock',
+            message: 'Spock smashes Scissors'
+         },
+         {
+            name: 'rock',
+            message: 'Rock crushes Scissors'
+         }
+      ]
    },
    {
       name: 'paper',
-      enemies: ['scissors', 'lizard'],
-      messages: ['Scissors cuts Paper!', 'Lizard eats Paper!']
+      enemies: [
+         {
+            name: 'scissors',
+            message: 'Scissors cuts Paper'
+         },
+         {
+            name: 'lizard',
+            message: 'Lizard eats Paper'
+         }
+      ]
    },
    {
       name: 'lizard',
-      enemies: ['rock', 'scissors'],
-      messages: ['Rock crushes Lizard!', 'Scissors decapitates Lizard!']
+      enemies: [
+         {
+            name: 'rock',
+            message: 'Rock crushes Lizard'
+         },
+         {
+            name: 'scissors',
+            message: 'Scissors decapitates Lizard'
+         }
+      ]
    },
    {
       name: 'spock',
-      enemies: ['lizard', 'paper'],
-      messages: ['Lizard poisons Spock!', 'Paper disproves Spock!']
+      enemies: [
+         {
+            name: 'lizard',
+            message: 'Lizard poisons Spock'
+         },
+         {
+            name: 'paper',
+            message: 'Paper disproves Spock'
+         }
+      ]
    }
 ]
 
 
 // default exports
-module.exports.Player = Player;
 module.exports.gestureChoice = gestureChoice;
 module.exports.enemiesList = enemiesList;
