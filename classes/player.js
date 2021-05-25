@@ -7,7 +7,9 @@ class Player {
       this.wins = 0;
       this.games = 0;
       this.gesture = '';
+      this.gestureChoices = ['rock', 'paper', 'scissors', 'lizard', 'spock'];
    }
+
    resetRound() {
       this.wins = 0;
       this.gesture = '';

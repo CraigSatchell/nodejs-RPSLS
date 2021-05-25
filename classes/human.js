@@ -1,6 +1,6 @@
 "use strict";
 
-const Player = require('./player')
+const Player = require('./Player')
 const { promptGesture } = require('../helper');
 
 
@@ -11,19 +11,19 @@ class Human extends Player {
 
    }
 
-   selectGesture(gestures) {
+   selectGesture() {
       let selGesture = -1
       // get gesture input from player
-      while (selGesture < 0 || selGesture > gestures.length - 1) {
-            console.log(`\n\t\t   *** ${this.name}: SELECT A GESTURE ***`);
-         gestures.map(function (g, index) {
+      while (selGesture < 0 || selGesture > super.gestureChoices.length - 1) {
+         console.log(`\n\t\t   *** ${this.name}: SELECT A GESTURE ***`);
+         super.gestureChoices.map(function (g, index) {
             return console.log('\t\t\t', index, ' - ', g);
          })
          selGesture = parseInt(promptGesture(`\tSelect One: `));
          if (isNaN(selGesture)) {
             selGesture = -1;
          } else {
-            super.gesture = gestures[selGesture];
+            super.gesture = super.gestureChoices[selGesture];
          }
       }
    }

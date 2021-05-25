@@ -1,6 +1,6 @@
 "use strict";
 
-const Player = require('./player');
+const Player = require('./Player');
 
 class AI extends Player {
    constructor(name) {
@@ -8,12 +8,12 @@ class AI extends Player {
       this.isHuman = false;
    }
 
-   selectGesture(gestures) {
+   selectGesture() {
       let selGesture;
       // assign random gesture to AI player
-      selGesture = Math.floor(Math.random() * gestures.length);
+      selGesture = Math.floor(Math.random() * super.gestureChoices.length);
       console.log('\n\t\tAI Player is thinking......');
-      super.gesture = gestures[selGesture];
+      super.gesture = super.gestureChoices[selGesture];
    }
 }
 

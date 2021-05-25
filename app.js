@@ -7,8 +7,8 @@ const chalk = require('chalk');
 // local imports
 const { enemiesList, gestureChoice } = require('./data.js');
 const AI = require('./classes/AI');
-const Human = require('./classes/human');
-const Game = require('./classes/game');
+const Human = require('./classes/Human');
+const Game = require('./classes/Game');
 
 const appTitle = 'ROCK PAPER SCISSORS LIZARD SPOCK (RPSLS)';
 
@@ -190,7 +190,7 @@ function determineWinner(player1, player2, enemiesList) {
    myEnemy = enemiesList.find(function (e) {
       return e.name === player1.gesture;
    });
-   // search for en
+   // search for enemy
    let enemy = myEnemy.enemies.find(function (e) {
       return e.name === player2.gesture;
    });
@@ -218,13 +218,11 @@ function appBanner(appTitle) {
 
 }
 
-
 function playGameBanner() {
    appBanner(appTitle);
    console.log(colorPrimary('\n\n\t\t' + cenText('*** PLAY GAME ***\n', 46)));
 
 }
-
 
 // execute application
 app();
