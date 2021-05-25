@@ -7,6 +7,7 @@ const chalk = require('chalk');
 const { enemiesList, gestureChoice } = require('./data.js');
 const AI = require('./classes/AI');
 const Human = require('./classes/human');
+const Game = require('./classes/game');
 
 const appTitle = 'ROCK PAPER SCISSORS LIZARD SPOCK (RPSLS)';
 
@@ -39,7 +40,7 @@ function playGame(gestures, enemiesLst) {
    let roundChoices = [3, 5, 7];
    let rounds;
    let roundWinner;
-   let seriesWinner;
+   let gameWinner;
    let input;
 
    while (players !== 1 && players !== 2) {
@@ -75,7 +76,7 @@ function playGame(gestures, enemiesLst) {
       // get rounds to play game
       while (!roundChoices.includes(rounds)) {
          playGameBanner();
-         input = promptFor("How many rounds in series? (3, 5 or 7) or 'X' to Quit ? ");
+         input = promptFor("How many rounds in a game? (3, 5 or 7) or 'X' to Quit ? ");
          if (input.toUpperCase() === 'X') {
             return
          }
@@ -100,33 +101,36 @@ function playGame(gestures, enemiesLst) {
             pressReturn('Both players chose the same gesture! Repeat...');
          } else {
             roundWinner = determineWinner(player1, player2, enemiesLst);
+            Game.roundsPlayed += 1; // update rounds played
             count++;
+            
             console.log(colorPrimary(`\n\t\t${roundWinner.name} won the round.`));
             console.log(colorSecondary('\n\t\t' + colorPrimaryHighlight(' SCORE ') + ' ' + colorInline(player1.name + ': ' + colorPrimary(player1.wins) + '  ' + player2.name + ': ' + colorPrimary(player2.wins))));
             pressReturn();
 
-            // check for series winner
+            // check for game winner
             if ((player1.wins) > (rounds / 2)) {
-               seriesWinner = player1;
+               gameWinner = player1;
             } else if ((player2.wins) > (rounds / 2)) {
-               seriesWinner = player2;
+               gameWinner = player2;
             }
-            if (seriesWinner !== undefined && seriesWinner !== null) {
+            if (gameWinner !== undefined && gameWinner !== null) {
                appBanner(appTitle);
                console.log('\n\n');
-               pressReturn("Congratulations! " + colorPrimaryHighlight(` ${seriesWinner.name} `) + ", you won the series.\n");
-               seriesWinner.series += 1; // update player game stats
+               pressReturn("Congratulations! " + colorPrimaryHighlight(` ${gameWinner.name} `) + ", you won the game.\n");
+               Game.gamesPlayed += 1;  // update games played
+               gameWinner.games += 1; // update player game stats
                count = rounds + 1;    // force loop exit
             }
          }
       }
-      input = promptFor(colorPrimary("Play another series ( Y/N ) ? ")).toUpperCase();
+      input = promptFor(colorPrimary("Play another game ( Y/N ) ? ")).toUpperCase();
       if (input !== 'Y') {
          break;      // exit loop if answer is no
       }
       player1.resetRound();      // reset player 1 wins to 0
       player2.resetRound();      // reset player 2 wins to 0
-      seriesWinner = null;    // reset game winner
+      gameWinner = null;    // reset game winner
       rounds = 0;             // reset rounds
    }
 }

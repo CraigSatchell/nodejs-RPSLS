@@ -2,8 +2,12 @@
 
 
 class Game {
-   constructor() {
-      this.series = 0;
+   static players = [];
+   static roundsPlayed = 0;
+   static gamesPlayed = 0;
+
+   static addPlayer(player) {
+      Game.players.push(player);
    }
 }
 

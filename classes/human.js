@@ -6,7 +6,7 @@ class Human extends Player {
    constructor(name) {
       super(name);
       this.isHuman = true;
-      
+
    }
 }
 
