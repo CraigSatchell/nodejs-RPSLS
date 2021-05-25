@@ -194,9 +194,8 @@ function determineWinner(player1, player2, enemiesList) {
    let enemy = myEnemy.enemies.find(function (e) {
       return e.name === player2.gesture;
    });
-   console.log('E100: ', myEnemy);
-   //console.log('E101: ', enemy.name, player2.gesture, enemy === player2.gesture);
-   console.log('E102: Player 1:', player1.gesture, '  Player 2:', player2.gesture);
+   // console.log('\n\t\tE100: ', myEnemy);
+   // console.log('\t\tE102: Player 1:', player1.gesture, '  Player 2:', player2.gesture);
 
    // determine winner
    if (enemy !== undefined) {
@@ -207,21 +206,6 @@ function determineWinner(player1, player2, enemiesList) {
    winner.updateWins();  // update winning player's score;
    return winner;    // return winning player's class object
 }
-
-// reset game
-function resetGame(player1, player2) {
-   player1.name = 'Player 1';
-   player1.wins = 0;
-   player1.games = 0;
-   player1.gesture = '';
-
-   player2.name = 'Player 2';
-   player2.wins = 0;
-   player2.games = 0;
-   player2.gesture = '';
-}
-
-
 
 // application banner
 function appBanner(appTitle) {

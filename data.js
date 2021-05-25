@@ -3,7 +3,6 @@
 // define selectable game gestures
 const gestureChoice = ['rock', 'paper', 'scissors', 'lizard', 'spock'];
 
-
 // enemies list
 const enemiesList = [
    {

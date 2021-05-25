@@ -12,12 +12,10 @@ class Human extends Player {
    }
 
    selectGesture(gestures) {
-      // declare local variables
       let selGesture = -1
-   
+      // get gesture input from player
       while (selGesture < 0 || selGesture > gestures.length - 1) {
-   
-         console.log(`\n\t\t   *** ${this.name}: SELECT A GESTURE ***`);
+            console.log(`\n\t\t   *** ${this.name}: SELECT A GESTURE ***`);
          gestures.map(function (g, index) {
             return console.log('\t\t\t', index, ' - ', g);
          })
