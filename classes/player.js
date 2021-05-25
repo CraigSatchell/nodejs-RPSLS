@@ -12,6 +12,10 @@ class Player {
       this.wins = 0;
       this.gesture = '';
    }
+
+   updateWins() {
+      this.wins += 1;
+   }
    
 }
 

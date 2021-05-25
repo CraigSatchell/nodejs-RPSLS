@@ -4,7 +4,8 @@
   "description": "Rock, Paper, Scissors, Lizards and Spocks Game",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "debug": "node app.js"
   },
   "keywords": [
     "rock",

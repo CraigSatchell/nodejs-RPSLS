@@ -72,6 +72,10 @@ function playGame(gestures, enemiesLst) {
    player1.name = play1 === '' ? player1.name : play1;
    player2.name = play2 === '' ? player2.name : play2;
 
+   // add players to game static instance
+   Game.addPlayer(player1);
+   Game.addPlayer(player2);
+
    while (true) {
       // get rounds to play game
       while (!roundChoices.includes(rounds)) {
@@ -103,7 +107,7 @@ function playGame(gestures, enemiesLst) {
             roundWinner = determineWinner(player1, player2, enemiesLst);
             Game.roundsPlayed += 1; // update rounds played
             count++;
-            
+
             console.log(colorPrimary(`\n\t\t${roundWinner.name} won the round.`));
             console.log(colorSecondary('\n\t\t' + colorPrimaryHighlight(' SCORE ') + ' ' + colorInline(player1.name + ': ' + colorPrimary(player1.wins) + '  ' + player2.name + ': ' + colorPrimary(player2.wins))));
             pressReturn();
@@ -169,9 +173,9 @@ function selectGestureAI(player, gestures) {
 
 
 // update player wins
-function updatePlayerWins(player) {
-   player.wins += 1;
-}
+// function updateWins(player) {
+//    player.wins += 1;
+// }
 
 
 // determine round winner 
@@ -199,7 +203,7 @@ function determineWinner(player1, player2, enemiesList) {
    } else {
       winner = player1; // player one won the round
    }
-   updatePlayerWins(winner);  // update winning player's score;
+   winner.updateWins();  // update winning player's score;
    return winner;    // return winning player's class object
 }
 
