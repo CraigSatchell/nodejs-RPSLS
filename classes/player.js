@@ -8,7 +8,10 @@ class Player {
       this.series = 0;
       this.gesture = '';
    }
-
+   resetRound() {
+      this.wins = 0;
+      this.gesture = '';
+   }
    
 }
 

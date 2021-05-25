@@ -124,10 +124,10 @@ function playGame(gestures, enemiesLst) {
       if (input !== 'Y') {
          break;      // exit loop if answer is no
       }
-      player1.wins = 0;    // reset player 1 wins to 0
-      player2.wins = 0;    // reset player 2 wins to 0
-      seriesWinner = null;   // reset game winner
-      rounds = 0;          // reset rounds
+      player1.resetRound();      // reset player 1 wins to 0
+      player2.resetRound();      // reset player 2 wins to 0
+      seriesWinner = null;    // reset game winner
+      rounds = 0;             // reset rounds
    }
 }
 
@@ -175,6 +175,7 @@ function determineWinner(player1, player2, enemiesList) {
    // declare local variables
    let winner;
    let myEnemy;
+
 
    // search ememies list for matching gesture
    myEnemy = enemiesList.find(function (e) {

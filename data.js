@@ -74,6 +74,7 @@ const enemiesList = [
 ]
 
 
+
 // default exports
 module.exports.gestureChoice = gestureChoice;
 module.exports.enemiesList = enemiesList;
