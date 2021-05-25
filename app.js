@@ -1,5 +1,6 @@
 "use strict";
 
+const { promptFor, promptGesture, pressReturn, cenText } = require('./helper');
 const prompt = require('prompt-sync')();
 const chalk = require('chalk');
 
@@ -220,37 +221,6 @@ function resetGame(player1, player2) {
    player2.gesture = '';
 }
 
-
-/*****************************
- * helper functions
- */
-
-// wait for user to press return to continue
-function pressReturn(msg = 'Press RETURN...') {
-   prompt(`\n\t\t${msg}`);
-}
-
-
-// prompt for standard data entry
-function promptFor(label) {
-   return prompt(`\t\t${label}`);
-}
-
-
-// prompt for gesture entry
-function promptGesture(label) {
-   return prompt(`\t\t${label}`, { echo: '*' });
-}
-
-
-function cenText(text, width = 50) {
-   let padding = 0;
-   if (text.length <= width) {
-      padding = (width - text.length) / 2;
-      return ' '.repeat(padding) + text + ' '.repeat(padding)
-   }
-   return text;   // omit text centering
-}
 
 
 // application banner
