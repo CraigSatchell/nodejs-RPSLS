@@ -1,24 +1,16 @@
 "use strict";
 
-const { promptFor, promptGesture, pressReturn, cenText } = require('./helper');
 const prompt = require('prompt-sync')();
 const chalk = require('chalk');
 
 // local imports
+const { promptFor, promptGesture, pressReturn, cenText, playGameBanner,
+   appBanner, appTitle, colorPrimary, colorPrimaryHighlight, colorSecondary, colorInline } = require('./helper');
+
 const { enemiesList, gestureChoice } = require('./data.js');
 const AI = require('./classes/AI');
 const Human = require('./classes/Human');
 const Game = require('./classes/Game');
-
-const appTitle = 'ROCK PAPER SCISSORS LIZARD SPOCK (RPSLS)';
-
-// ui color definitions
-const colorBanner = chalk.black.bgYellow;
-const colorPrimary = chalk.yellow;
-const colorPrimaryHighlight = chalk.black.bgYellow;
-const colorSecondary = chalk.green;
-const colorSecondaryHighlight = chalk.black.bgGreen;
-const colorInline = chalk.white;
 
 
 // main application
@@ -207,22 +199,7 @@ function determineWinner(player1, player2, enemiesList) {
    return winner;    // return winning player's class object
 }
 
-// application banner
-function appBanner(appTitle) {
-   console.clear();
-   console.log(colorBanner('\n\n\n\t\t' + ' '.repeat(46)));
-   console.log(colorBanner('\t\t' + ' '.repeat(46)));
-   console.log(colorBanner('\t\t' + cenText(appTitle, 46)));
-   console.log(colorBanner('\t\t' + ' '.repeat(46)));
-   console.log(colorBanner('\t\t' + ' '.repeat(46)));
 
-}
-
-function playGameBanner() {
-   appBanner(appTitle);
-   console.log(colorPrimary('\n\n\t\t' + cenText('*** PLAY GAME ***\n', 46)));
-
-}
 
 // execute application
 app();
