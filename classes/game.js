@@ -1,6 +1,6 @@
 "use strict";
 
-const { cenText, colorPrimaryHighlight } = require("../helper");
+const { cenText, colorPrimaryHighlight, colorPrimary } = require("../helper");
 
 
 class Game {
@@ -14,9 +14,13 @@ class Game {
    }
 
    static showScoreBoard() {
-      console.log('\n\t\t\t  ' + cenText(colorPrimaryHighlight('  SCOREBOARD  '),46));
+      console.log('\n\n\t\t\t  ' + cenText(colorPrimaryHighlight('  SCOREBOARD  '),46));
       console.log('\n\t\t' + cenText('*** Total Games Won ***',46));
       console.log(`\n\t\t\t${this.players[0].name}: ${this.players[0].games}\t${this.players[1].name}: ${this.players[1].games}\n`)
+   }
+   static showGestureChoices() {
+      console.log('\n\n\t\t\t  ' + cenText(colorPrimaryHighlight('  GESTURE CHOICES  '),46));
+      console.log('\n\t\t\t' + colorPrimary(this.players[0].name + ': ') + this.players[0].gesture + '\t' + colorPrimary(this.players[1].name + ': ') + this.players[1].gesture + '\n');
    }
 
 

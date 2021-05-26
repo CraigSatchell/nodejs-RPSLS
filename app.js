@@ -96,8 +96,9 @@ function playGame(enemiesLst) {
             Game.roundsPlayed += 1; // update rounds played
             count++;
 
-            console.log(colorPrimary(`\n\t\t${roundWinner.name} won the round.`));
-            console.log(colorSecondary('\n\t\t' + colorPrimaryHighlight(' SCORE ') + ' ' + colorInline(player1.name + ': ' + colorPrimary(player1.wins) + '  ' + player2.name + ': ' + colorPrimary(player2.wins))));
+            Game.showGestureChoices();    // show gestures choices selected by each player
+            console.log('\n\t\t' + cenText(roundWinner.name + ' won the round.',46));
+            console.log(colorSecondary('\n\n\t\t\t' + colorPrimaryHighlight(' SCORE ') + ' ' + colorInline(player1.name + ': ' + colorPrimary(player1.wins) + '  ' + player2.name + ': ' + colorPrimary(player2.wins))));
             pressReturn();
 
             // check for game winner
@@ -117,7 +118,7 @@ function playGame(enemiesLst) {
             }
          }
       }
-      input = promptFor(colorPrimary("Play another game ( Y/N ) ? ")).toUpperCase();
+      input = promptFor(colorPrimary("\n\n\t\t\tPlay another game ( Y/N ) ? ")).toUpperCase();
       if (input !== 'Y') {
          break;      // exit loop if answer is no
       }
