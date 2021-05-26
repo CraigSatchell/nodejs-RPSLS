@@ -112,6 +112,7 @@ function playGame(enemiesLst) {
                pressReturn("Congratulations! " + colorPrimaryHighlight(` ${gameWinner.name} `) + ", you won the game.\n");
                Game.gamesPlayed += 1;  // update games played
                gameWinner.games += 1; // update player game stats
+               Game.showScoreBoard();  // display game statistics
                count = rounds + 1;    // force loop exit
             }
          }

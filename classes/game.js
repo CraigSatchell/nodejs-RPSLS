@@ -1,5 +1,7 @@
 "use strict";
 
+const { cenText, colorPrimaryHighlight } = require("../helper");
+
 
 class Game {
    static players = [];
@@ -10,6 +12,13 @@ class Game {
    static addPlayer(player) {
       Game.players.push(player);
    }
+
+   static showScoreBoard() {
+      console.log('\n\t\t\t  ' + cenText(colorPrimaryHighlight('  SCOREBOARD  '),46));
+      console.log('\n\t\t' + cenText('*** Total Games Won ***',46));
+      console.log(`\n\t\t\t${this.players[0].name}: ${this.players[0].games}\t${this.players[1].name}: ${this.players[1].games}\n`)
+   }
+
 
    // determine round winner
    static determineWinner(enemiesList) {

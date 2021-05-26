@@ -5,12 +5,12 @@ const chalk = require('chalk');
 const appTitle = 'ROCK PAPER SCISSORS LIZARD SPOCK (RPSLS)';
 
 // ui color definitions
-const colorBanner = chalk.black.bgWhite;
-const colorPrimary = chalk.white;
-const colorPrimaryHighlight = chalk.black.bgWhite;
+const colorBanner = chalk.black.bgYellow;
+const colorPrimary = chalk.yellow;
+const colorPrimaryHighlight = chalk.black.bgYellow;
 const colorSecondary = chalk.green;
 const colorSecondaryHighlight = chalk.black.bgGreen;
-const colorInline = chalk.white;
+const colorInline = chalk.yellow;
 
 
 // wait for user to press return to continue
@@ -41,6 +41,12 @@ function cenText(text, width = 50) {
 }
 
 
+async function wait(msg='', secs=3) {
+   await new Promise(r => setTimeout(r, secs * 1000));
+   console.log(msg);
+}
+
+
 // application banner
 function appBanner(appTitle) {
    console.clear();
@@ -65,6 +71,7 @@ module.exports.promptFor = promptFor;
 module.exports.pressReturn = pressReturn;
 module.exports.appBanner = appBanner;
 module.exports.playGameBanner = playGameBanner;
+module.exports.wait = wait;
 module.exports.appTitle = appTitle;
 module.exports.colorBanner = colorBanner;
 module.exports.colorPrimary = colorPrimary;
