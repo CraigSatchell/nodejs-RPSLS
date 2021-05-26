@@ -118,7 +118,7 @@ function playGame(enemiesLst) {
             }
          }
       }
-      input = promptFor(colorPrimary("\n\n\t\t\tPlay another game ( Y/N ) ? ")).toUpperCase();
+      input = promptFor(colorPrimary("\tPlay another game ( Y/N ) ? ")).toUpperCase();
       if (input !== 'Y') {
          break;      // exit loop if answer is no
       }
