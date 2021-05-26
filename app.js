@@ -17,13 +17,13 @@ const Game = require('./classes/Game');
 function app() {
    // local variables
 
-   playGame(gestureChoice, enemiesList);
+   playGame(enemiesList);
    console.log('\n\n\t\t' + cenText('Thanks for playing RPSLS! :)\n\n', 46));
 }
 
 
 // setup and play games
-function playGame(gestures, enemiesLst) {
+function playGame(enemiesLst) {
    // declare local variables
    let players = 0;
    let play1 = '';
@@ -84,14 +84,9 @@ function playGame(gestures, enemiesLst) {
       while (count <= rounds) {
          // get player gestures
          appBanner(appTitle);
-         console.log(colorPrimary('\n\t\t' + cenText('ROUND ' + count, 46)));
-         if (players === 2) {
-            selectGestureHuman(player1, gestures);
-            selectGestureHuman(player2, gestures);
-         } else {    // if AI Player exist
-            selectGestureHuman(player1, gestures);
-            selectGestureAI(player2, gestures);
-         }
+         // select gestures
+         player1.selectGesture();
+         player2.selectGesture();
 
          // check if gestures are equal else check for winner
          if (player1.gesture === player2.gesture) {
@@ -132,43 +127,6 @@ function playGame(gestures, enemiesLst) {
    }
 }
 
-
-// select human gesture
-function selectGestureHuman(player, gestures) {
-   // declare local variables
-   let selGesture = -1
-
-   while (selGesture < 0 || selGesture > gestures.length - 1) {
-
-      console.log(`\n\t\t   *** ${player.name}: SELECT A GESTURE ***`);
-      gestures.map(function (g, index) {
-         return console.log('\t\t\t', index, ' - ', g);
-      })
-      selGesture = parseInt(promptGesture(`\tSelect One: `));
-      if (isNaN(selGesture)) {
-         selGesture = -1;
-      } else {
-         player.gesture = gestures[selGesture];
-      }
-   }
-}
-
-
-// select AI gesture
-function selectGestureAI(player, gestures) {
-   // declare local variables
-   let selGesture;
-   // assign random gesture to AI player
-   selGesture = Math.floor(Math.random() * gestures.length);
-   console.log('\n\t\tAI Player is thinking......');
-   player.gesture = gestures[selGesture];
-}
-
-
-// update player wins
-// function updateWins(player) {
-//    player.wins += 1;
-// }
 
 
 // determine round winner 

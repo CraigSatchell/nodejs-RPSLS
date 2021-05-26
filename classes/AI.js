@@ -11,9 +11,9 @@ class AI extends Player {
    selectGesture() {
       let selGesture;
       // assign random gesture to AI player
-      selGesture = Math.floor(Math.random() * super.gestureChoices.length);
+      selGesture = Math.floor(Math.random() * this.gestureChoices.length);
       console.log('\n\t\tAI Player is thinking......');
-      super.gesture = super.gestureChoices[selGesture];
+      this.gesture = this.gestureChoices[selGesture];
    }
 }
 

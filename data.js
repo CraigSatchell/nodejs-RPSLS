@@ -1,8 +1,5 @@
 "use strict";
 
-// define selectable game gestures
-const gestureChoice = ['rock', 'paper', 'scissors', 'lizard', 'spock'];
-
 // enemies list
 const enemiesList = [
    {
@@ -75,5 +72,4 @@ const enemiesList = [
 
 
 // default exports
-module.exports.gestureChoice = gestureChoice;
 module.exports.enemiesList = enemiesList;
