@@ -4,10 +4,10 @@ const prompt = require('prompt-sync')();
 const chalk = require('chalk');
 
 // local imports
-const { promptFor, promptGesture, pressReturn, cenText, playGameBanner,
+const { promptFor, pressReturn, cenText, playGameBanner,
    appBanner, appTitle, colorPrimary, colorPrimaryHighlight, colorSecondary, colorInline } = require('./helper');
 
-const { enemiesList, gestureChoice } = require('./data.js');
+const { enemiesList } = require('./data.js');
 const AI = require('./classes/AI');
 const Human = require('./classes/Human');
 const Game = require('./classes/Game');
@@ -53,7 +53,7 @@ function playGame(enemiesLst) {
       play1 = promptFor('Enter Name for Player 1: '); 0
       play2 = 'AI Player';
    }
-   // initialize player class instances
+   // initialize new player class instances
    if (players === 1) {
       player1 = new Human('Player 1');
       player2 = new AI('AI Player');
@@ -92,7 +92,7 @@ function playGame(enemiesLst) {
          if (player1.gesture === player2.gesture) {
             pressReturn('Both players chose the same gesture! Repeat...');
          } else {
-            roundWinner = determineWinner(player1, player2, enemiesLst);
+            roundWinner = Game.determineWinner(enemiesLst);
             Game.roundsPlayed += 1; // update rounds played
             count++;
 
@@ -126,37 +126,6 @@ function playGame(enemiesLst) {
       rounds = 0;             // reset rounds
    }
 }
-
-
-
-// determine round winner 
-function determineWinner(player1, player2, enemiesList) {
-   // declare local variables
-   let winner;
-   let myEnemy;
-
-
-   // search ememies list for matching gesture
-   myEnemy = enemiesList.find(function (e) {
-      return e.name === player1.gesture;
-   });
-   // search for enemy
-   let enemy = myEnemy.enemies.find(function (e) {
-      return e.name === player2.gesture;
-   });
-   // console.log('\n\t\tE100: ', myEnemy);
-   // console.log('\t\tE102: Player 1:', player1.gesture, '  Player 2:', player2.gesture);
-
-   // determine winner
-   if (enemy !== undefined) {
-      winner = player2; // player two won the round
-   } else {
-      winner = player1; // player one won the round
-   }
-   winner.updateWins();  // update winning player's score;
-   return winner;    // return winning player's class object
-}
-
 
 
 // execute application
